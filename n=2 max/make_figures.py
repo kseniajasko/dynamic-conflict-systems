@@ -8,13 +8,15 @@ Colour code (meaning-carrying colours):
   grey dashed = symmetric state (saddle)
   purple      = multipliers / contraction rates
 All figures are written as vector PDF (plus PNG previews) into ./out.
+The only random initial points (collapse figure) use numpy default_rng(7);
+everything else is deterministic.
+The numerical checks of global convergence (Section 5.1) are performed by
+the separate script check_convergence.py.
 
-Run:  python3 make_figures.py            (figures)
-      python3 make_figures.py --stats    (figures + convergence table, ~4 min)
+Run:  python3 make_figures.py
 Requires: numpy, matplotlib.
 """
 import os
-import sys
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -378,14 +380,12 @@ def iterate_grid(a, n=400, steps=4000):
 
 cmap = ListedColormap(["#aed6f1", "#f5b7b1", "#d5d8dc"])   # light blue, light red, grey
 fig, axs = plt.subplots(1, 3, figsize=(W, 2.55))
-grid_report = []
 for ax, a in zip(axs, (0.5, 1.5, 2.5)):
     X, Y, x, y = iterate_grid(a)
     u, v = cycle4(a) if a < 2 else fixed_asym(a)
-    cls = np.full(X.shape, 2)
+    cls = np.full(X.shape, 2)             # grey: not at the asymmetric attractor
     cls[(abs(x - u) < 1e-6) & (abs(y - v) < 1e-6)] = 0
     cls[(abs(x - v) < 1e-6) & (abs(y - u) < 1e-6)] = 1
-    grid_report.append((a, X.size, int((cls == 2).sum())))
     # the PDF embeds exactly the computed 400 x 399 array (no resampling)
     dx, dy = X[0, 1] - X[0, 0], Y[1, 0] - Y[0, 0]
     ax.imshow(cls, cmap=cmap, vmin=-0.5, vmax=2.5, origin="lower", interpolation="none",
@@ -400,38 +400,5 @@ for ax, a in zip(axs, (0.5, 1.5, 2.5)):
     ax.set_title(r"$\alpha=%.1f$" % a)
 fig.tight_layout(w_pad=1.0)
 save(fig, "fig_basins")
-with open(os.path.join(OUT, "grid_report.txt"), "w") as f:
-    for a, n_, bad in grid_report:
-        f.write(f"alpha={a}: grid points={n_}, not converged to asymmetric attractor={bad}\n")
-print(grid_report)
 
-# ================================================================ statistics (cached)
-if os.path.exists(os.path.join(OUT, "convergence_stats.tex")) and "--stats" not in sys.argv:
-    print("stats cached"); sys.exit()
-rng = np.random.default_rng(2026)
-rows = []
-for a in [0.2, 0.5, 1.0, 1.5, 1.9, 1.99, 2.01, 2.1, 2.5, 3.0, 5.0, 10.0]:
-    N = 100000
-    x = rng.uniform(0.5, 1, N); y = rng.uniform(0.5, 1, N)
-    x0, y0 = x.copy(), y.copy()
-    u, v = cycle4(a) if a < 2 else fixed_asym(a)
-    hit = np.full(N, -1)
-    for t_ in range(1, 6001):
-        x, y = Phi(x, y, a)
-        if t_ % 2 == 0:
-            d = np.minimum(np.hypot(x - u, y - v), np.hypot(x - v, y - u))
-            new = (hit < 0) & (d < 1e-10)
-            hit[new] = t_
-    conv = hit > 0
-    wrong = 0
-    if a > 2:
-        win_first = np.hypot(x - u, y - v) < 1e-8
-        wrong = int(np.sum(conv & (win_first != (x0 > y0))))
-    rows.append((a, conv.mean(), int(np.median(hit[conv])), int(hit[conv].max()), wrong))
-with open(os.path.join(OUT, "convergence_stats.tex"), "w") as f:
-    f.write("% alpha & fraction converged & median steps & max steps & winner != larger initial max\n")
-    for a, fr, med, mx, w in rows:
-        f.write(f"{a:g} & {100*fr:.3f}\\% & {med} & {mx} & {w if a > 2 else '--'} \\\\\n")
-for r_ in rows:
-    print(r_)
-print("done")
+print("figures written to", OUT)
