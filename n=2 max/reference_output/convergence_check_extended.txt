@@ -1,0 +1,81 @@
+A. Collapse at alpha = 2: ratio (G_{t+2} - 1/2) / (G_t - 1/2)
+
+   100000 random initial points (seed 2029)
+   t =   20: max |ratio - 3/4| = 6.04e-03   median G_t - 1/2 = 1.2e-02
+   t =   40: max |ratio - 3/4| = 3.36e-04   median G_t - 1/2 = 6.8e-04
+   t =   80: max |ratio - 3/4| = 1.06e-06   median G_t - 1/2 = 2.2e-06
+   t =  120: max |ratio - 3/4| = 2.49e-06   median G_t - 1/2 = 6.9e-09
+
+B. Control for part 3: closest approach of random (non-boundary) initial points
+   (10000 points per alpha, 400 steps; median and minimum over the sample)
+
+   alpha = 1.5: to the diagonal 2.1e-02 (min 1.4e-06), to the saddle 3.4e-02 (min 6.1e-05); x_sym = 0.548584
+   alpha = 1.9: to the diagonal 4.3e-03 (min 5.2e-08), to the saddle 5.6e-03 (min 4.3e-06); x_sym = 0.508573
+   alpha = 1.99: to the diagonal 4.5e-04 (min 8.0e-09), to the saddle 5.3e-04 (min 8.8e-07); x_sym = 0.500836
+
+C. Uncertainty exponent 2 - D: weighted fit over eps <= 1e-04 (+- 1 s.e.)
+
+   alpha = 1.5   2 - D = 0.947 +- 0.053   D = 1.053
+   alpha = 1.9   2 - D = 0.973 +- 0.028   D = 1.027
+   alpha = 1.99  2 - D = 0.971 +- 0.018   D = 1.029
+
+D. Periodic orbits of Phi of periods 1..8 found by Newton's method (20000 starts per period)
+
+   alpha = 0.5: 2 orbit(s)
+      period 1, saddle, diagonal: (0.732051, 0.732051); |multipliers| 0.2679, 1.7321
+      period 2, attracting, off the diagonal: (0.682328, 0.931142), (0.931142, 0.682328); |multipliers| 0.3647, 0.3647
+   alpha = 1: 2 orbit(s)
+      period 1, saddle, diagonal: (0.618034, 0.618034); |multipliers| 0.3820, 1.6180
+      period 2, attracting, off the diagonal: (0.754878, 0.569840), (0.569840, 0.754878); |multipliers| 0.5698, 0.5698
+   alpha = 1.5: 2 orbit(s)
+      period 1, saddle, diagonal: (0.548584, 0.548584); |multipliers| 0.4514, 1.5486
+      period 2, attracting, off the diagonal: (0.523748, 0.606210), (0.606210, 0.523748); |multipliers| 0.6825, 0.6825
+   alpha = 1.9: 2 orbit(s)
+      period 1, saddle, diagonal: (0.508573, 0.508573); |multipliers| 0.4914, 1.5086
+      period 2, attracting, off the diagonal: (0.503759, 0.518461), (0.518461, 0.503759); |multipliers| 0.7388, 0.7388
+   alpha = 1.99: 2 orbit(s)
+      period 1, saddle, diagonal: (0.500836, 0.500836); |multipliers| 0.4992, 1.5008
+      period 2, attracting, off the diagonal: (0.500359, 0.501792), (0.501792, 0.500359); |multipliers| 0.7489, 0.7489
+   alpha = 2.5: 3 orbit(s)
+      period 1, saddle, diagonal: (0.600000, 0.600000); |multipliers| 1.6000, 0.4000
+      period 1, attracting, off the diagonal: (0.600000, 0.822222); |multipliers| 0.7118, 0.7118
+      period 1, attracting, off the diagonal: (0.822222, 0.600000); |multipliers| 0.7118, 0.7118
+   alpha = 3: 3 orbit(s)
+      period 1, saddle, diagonal: (0.666667, 0.666667); |multipliers| 1.6667, 0.3333
+      period 1, attracting, off the diagonal: (0.666667, 0.916667); |multipliers| 0.6236, 0.6236
+      period 1, attracting, off the diagonal: (0.916667, 0.666667); |multipliers| 0.6236, 0.6236
+   alpha = 5: 3 orbit(s)
+      period 1, saddle, diagonal: (0.800000, 0.800000); |multipliers| 1.8000, 0.2000
+      period 1, attracting, off the diagonal: (0.800000, 0.987500); |multipliers| 0.4583, 0.4583
+      period 1, attracting, off the diagonal: (0.987500, 0.800000); |multipliers| 0.4583, 0.4583
+
+E. Phase determined by the sign of x0 - y0 for alpha <= 1 (whole square)
+
+   alpha = 0.2: 89700 grid points, phase (x*,y*) iff x0 > y0 fails at 0
+   alpha = 0.5: 89700 grid points, phase (x*,y*) iff x0 > y0 fails at 0
+   alpha = 1: 89700 grid points, phase (x*,y*) iff x0 > y0 fails at 0
+
+F. Corner (1,1), alpha = 1.99: windows compared with [0.99,1]^2 on 600 x 599 grids
+   (sector: rays from (1,1) within 10 degrees of the diagonal, 30% of the grid)
+
+   [0.9,1]^2 vs [0.99,1]^2: differing points 0.0465, of them in the sector 53%
+   [0.999,1]^2 vs [0.99,1]^2: differing points 0.0176, of them in the sector 44%
+
+G. Scaling by 0.75 about (1/2,1/2): share of the points w of 600 x 599 grids with colour(w) != colour(c + 0.75 (w - c)), c = (1/2,1/2)
+
+   alpha = 1.99, window [0.5,0.55]^2: 0.3957
+   alpha = 1.99999, window [0.5,0.505]^2: 0.0266
+
+H. Colour changes along the rays v = s u, 1e-06 <= u <= 0.2 (20000 points, geometric spacing), x = 1/2 + u, y = 1/2 + v
+
+   alpha = 1.99    s = 0.1: 17, s = 0.25: 18, s = 0.4: 17;  log_(4/3) (1/(2-alpha)) = 16.0
+   alpha = 1.999   s = 0.1: 32, s = 0.25: 32, s = 0.4: 33;  log_(4/3) (1/(2-alpha)) = 24.0
+   alpha = 1.9999  s = 0.1: 48, s = 0.25: 48, s = 0.4: 48;  log_(4/3) (1/(2-alpha)) = 32.0
+
+I. Collapse at alpha = 2: the trajectories of Fig. 9 (seed 7)
+
+   start (0.8125, 0.9486): |ratio - 3/4| at t = 80: 9.0e-07; one-step factors at t = 100: 0.8643, 0.8677 (product 0.750000)
+   start (0.8878, 0.6126): |ratio - 3/4| at t = 80: 8.0e-07; one-step factors at t = 100: 0.9213, 0.8140 (product 0.750000)
+   start (0.6501, 0.9368): |ratio - 3/4| at t = 80: 8.8e-07; one-step factors at t = 100: 0.9203, 0.8150 (product 0.750000)
+   start (0.5026, 0.9106): |ratio - 3/4| at t = 80: 8.5e-07; one-step factors at t = 100: 0.9977, 0.7517 (product 0.750000)
+   start (0.8985, 0.7340): |ratio - 3/4| at t = 80: 8.1e-07; one-step factors at t = 100: 0.8599, 0.8722 (product 0.750000)
